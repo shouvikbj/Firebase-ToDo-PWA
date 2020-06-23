@@ -4,8 +4,7 @@ import os
 import uuid
 from firebase import firebase
 
-Firebase = firebase.FirebaseApplication(
-    "https://testtodo-2bfe6.firebaseio.com/", None)
+Firebase = """ Configure Your Own Firebase url here """
 
 app = Flask(__name__, static_url_path='')
 app.secret_key = 'thisisasecretkey'
