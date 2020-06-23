@@ -27,9 +27,13 @@
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <link rel="manifest" href="/manifest.json" />
     <style>
-      body {
+      #body {
         background-color: black;
         color: white;
+      }
+      #body2 {
+        background-color: white;
+        color: black;
       }
       #navBar {
         position: fixed;
@@ -48,14 +52,89 @@
         border-radius: 30px;
       }
       #todo {
-        background-color: rgb(49, 42, 42);
+        /* background-color: rgb(49, 42, 42); */
+        -moz-border-radius: 20px !important;
+        -webkit-border-radius: 20px !important;
+        border-radius: 20px !important;
+        padding: 10px !important;
+        font-size: 25px !important;
+        /* color: white; */
+      }
+      #todo2 {
+        background-color: white;
         -moz-border-radius: 10px;
         -webkit-border-radius: 10px;
         border-radius: 10px;
+        color: black;
+        box-shadow: 0px 0px 15px -5px slategray;
+      }
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+
+      .switch input {
+        display: none;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      input:checked + .slider {
+        background-color: #2196f3;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px #2196f3;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
       }
     </style>
+    <script>
+      $(document).ready(function () {
+        var checkbox = document.querySelector('input[type="checkbox"]');
+        checkbox.addEventListener("change", function () {
+          if (checkbox.checked) {
+            // do this
+            document.getElementById("body").id = "body2";
+            // document.getElementById("todo").id = "todo2";
+          } else {
+            // do that
+            document.getElementById("body2").id = "body";
+            // document.getElementById("todo2").id = "todo";
+          }
+        });
+      });
+    </script>
   </head>
-  <body>
+  <body id="body" class="body">
     <div class="text-center">
       <br />
       <div class="container">
@@ -75,10 +154,23 @@
         {% endfor %} {% endif %} {% endwith %}
       </div>
       <div class="container text-center">
-        <div class="text-right">
-          <a href="/logout">
-            <button class="btn btn-danger">Logout</button>
-          </a>
+        <div class="row">
+          <div class="col-6">
+            <div class="text-left">
+              <label class="switch">
+                <input type="checkbox" />
+                <div class="slider"></div>
+              </label>
+              <p>toggle view</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="text-right">
+              <a href="/logout">
+                <button class="btn btn-danger">Logout</button>
+              </a>
+            </div>
+          </div>
         </div>
         <h3>My TODOs</h3>
       </div>
@@ -141,7 +233,8 @@
         }).done(function (res) {
           var data = "";
           $.each(res, function (index, value) {
-            data += '<div id="todo" class="container text-left">';
+            data +=
+              '<div id="todo" class="container text-left rounded border border-primary">';
             data += '<div class="container pt-3 pb-1">';
             data += "<p>" + value["todoString"] + "</p>";
             data += "</div>";
@@ -151,7 +244,7 @@
             data += "</div>";
             data += "</a>";
             data += "</div>";
-            data += "<br />";
+            data += "<br/>";
           });
           $("#todolist").html(data);
         });
@@ -166,7 +259,8 @@
             success: function (res) {
               var data = "";
               $.each(res, function (index, value) {
-                data += '<div id="todo" class="container text-left">';
+                data +=
+                  '<div id="todo" class="container text-left rounded border border-primary">';
                 data += '<div class="container pt-3 pb-1">';
                 data += "<p>" + value["todoString"] + "</p>";
                 data += "</div>";
@@ -176,7 +270,7 @@
                 data += "</div>";
                 data += "</a>";
                 data += "</div>";
-                data += "<br />";
+                data += "<br/>";
               });
               $("#todolist").html(data);
               $("#addBox").val("");
